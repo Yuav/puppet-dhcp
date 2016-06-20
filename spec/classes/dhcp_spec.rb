@@ -89,7 +89,6 @@ describe 'dhcp', type: :class do
         end
 
         it 'has domain-search option with empty array' do
-          is_expected.to contain_concat__fragment('dhcp-conf-header')
           is_expected.to contain_concat__fragment('dhcp-conf-header').without_content(/option domain-search/)
         end
       end
