@@ -67,7 +67,7 @@ describe 'dhcp', type: :class do
         is_expected.to contain_concat__fragment('dhcp-conf-header')
       end
 
-      context 'dns-search param' do
+      context 'dnssearchdomains param populated' do
         let :params do
           default_params.merge(
             interfaces: ['eth0'],
@@ -75,13 +75,34 @@ describe 'dhcp', type: :class do
           )
         end
 
-        it 'writes dnssearchdomain param into config file' do
+        it 'writes dnssearchdomains param into config file' do
           is_expected.to contain_concat__fragment('dhcp-conf-header').with_content(/option domain-search "example.com", "example.org";/)
         end
+      end
 
-        it 'should not contain domain-search option with empty array' do
-          is_expected.to contain_concat__fragment('dhcp-conf-header').with_content(/(?!option domain-search)/)
+      context 'dnssearchdomains param empty array' do
+        let :params do
+          default_params.merge(
+            interfaces: ['eth0'],
+            dnssearchdomains: []
+          )
         end
+
+        it 'has domain-search option with empty array' do
+          is_expected.to contain_concat__fragment('dhcp-conf-header')
+          is_expected.to contain_concat__fragment('dhcp-conf-header').without_content(/option domain-search/)
+        end
+      end
+
+      context 'dnssearchdomains param not array' do
+        let :params do
+          default_params.merge(
+            interfaces: ['eth0'],
+            dnssearchdomains: 'string'
+          )
+        end
+
+        it { is_expected.not_to compile }
       end
 
       context 'omapi_port => 7911' do

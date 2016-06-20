@@ -50,6 +50,7 @@ class dhcp (
     $dnsdomain_real = $dnsdomain
   }
   validate_array($dnsdomain_real)
+  validate_array($dnssearchdomains)
 
   validate_array($nameservers)
   validate_array($ntpservers)

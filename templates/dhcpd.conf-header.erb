@@ -15,7 +15,7 @@ log-facility <%= @logfacility %>;
 # ----------
 option domain-name "<%= @dnsdomain_real.first %>";
 option domain-name-servers <%= @nameservers.join(', ') %>;
-<% if @dnssearchdomains -%>
+<% if @dnssearchdomains && @dnssearchdomains != [] -%>
 option domain-search "<%= @dnssearchdomains.join('", "') %>";
 <% end -%>
 option fqdn.no-client-update on;  # set the "O" and "S" flag bits
