@@ -78,6 +78,10 @@ describe 'dhcp', type: :class do
         it 'writes dnssearchdomain param into config file' do
           is_expected.to contain_concat__fragment('dhcp-conf-header').with_content(/option domain-search "example.com", "example.org";/)
         end
+
+        it 'should not contain domain-search option with empty array' do
+          is_expected.to contain_concat__fragment('dhcp-conf-header').with_content(/(?!option domain-search)/)
+        end
       end
 
       context 'omapi_port => 7911' do
