@@ -67,6 +67,19 @@ describe 'dhcp', type: :class do
         is_expected.to contain_concat__fragment('dhcp-conf-header')
       end
 
+      context 'dns-search param' do
+        let :params do
+          default_params.merge(
+            interfaces: ['eth0'],
+            dnssearchdomains: ['example.com', 'example.org']
+          )
+        end
+
+        it 'writes dnssearchdomain param into config file' do
+          is_expected.to contain_concat__fragment('dhcp-conf-header').with_content(/option domain-search "example.com", "example.org";/)
+        end
+      end
+
       context 'omapi_port => 7911' do
         let :params do
           default_params.merge(
